@@ -10,13 +10,36 @@ from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.dateparse import parse_date
 from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
 from .models import Producto, Categoria, Proveedor, DetalleProducto, Ventas, Cliente
 from .forms import ProductoForm, CategoriaForm, ProveedorForm, DetalleProductoForm, ClienteForm, VentasForm
+from django.contrib.auth.decorators import permission_required
+from allauth.account.signals import user_signed_up
+
 
 # Create your views here.
 
 def inicio(request):
     return render(request, 'inventario/inicio.html')
+
+def register(request):
+    if request.method == 'POST':
+        form =UserCreationForm(request.POST)
+
+@receiver(user_signed_up)
+def assign_user_group(sender,request, user, **kwargs):
+    group = group.object.get(name='Usuarios Regulares')
+    user.groups.add(group)
+
+
+def my_view(request):
+    if not request.user.has_perm('inventario.view_producto'):
+        return redirect('no-access')
+    
+
+@permission_required('inventario.view_producto',
+raise_exception =True)
+       
 
 def listar_productos(request):
     # Obtiene todos los productos de la base de datos, incluyendo sus detalles relacionados,

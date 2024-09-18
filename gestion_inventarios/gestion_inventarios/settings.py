@@ -37,7 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccout.providers.google',
     'inventario',
+]
+
+SITE_ID = 1
+
+AUTHENTICAATION_BACKENDS = [
+    ('django.contrib','auth.backends.ModelBackend','allauth.account.auth_backends.AuthenticationBackend')
 ]
 
 MIDDLEWARE = [
@@ -101,6 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "auth.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

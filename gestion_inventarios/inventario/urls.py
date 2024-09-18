@@ -1,4 +1,6 @@
-from django.urls import path
+from django.urls import path, include
+from django.contrib.auth import views  as auth_views
+
 from .views import (
     listar_productos, detalle_producto, agregar_producto, editar_producto, eliminar_producto,
     listar_categorias, agregar_categoria, editar_categoria, eliminar_categoria,
@@ -7,6 +9,12 @@ from .views import (
 )
 
 urlpatterns = [
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+     path('register/', auth_views.RegisterView.as_view(), name='register')
+
+
+
     path('', inicio, name='inicio'),  # Ruta para la página de inicio.
     path('productos/', listar_productos, name='listar_productos'),
     path('productos/agregar/', agregar_producto, name='agregar_producto'),
